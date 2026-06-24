@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+    <title>Smart Tools Hub – أدوات ذكية مجانية</title>
+    <meta name="description" content="مجموعة متكاملة من الأدوات المساعدة مع نظام تسجيل دخول وحفظ التفضيلات.">
+    <meta name="keywords" content="أدوات مجانية, حساب العمر, BMI, مولد كلمات مرور, محول عملات, تحليل نصوص, عجلة الحظ, مترجم">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- ===== شريط التنقل ===== -->
+    <nav>
+        <div class="container nav-container">
+            <div class="logo-area">
+                <a href="#" class="logo" onclick="showHome()"><i class="fas fa-tools"></i> Smart Tools</a>
+                <span class="dev-signature">RAMI_DEV</span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#" onclick="showHome()" data-key="home">الرئيسية</a></li>
+                <li><a href="#" onclick="showPage('about')" data-key="about">من نحن</a></li>
+                <li><a href="#" onclick="showPage('contact')" data-key="contact">اتصل بنا</a></li>
+                <li><a href="#" onclick="showPage('privacy')" data-key="privacy">الخصوصية</a></li>
+                <li><a href="#" onclick="showPage('terms')" data-key="terms">الشروط</a></li>
+            </ul>
+            <div class="nav-actions">
+                <span id="userDisplay" style="display:none; margin-left:10px; font-weight:500;"></span>
+                <button id="loginBtn" onclick="showLoginModal()" data-key="login">تسجيل الدخول</button>
+                <button id="logoutBtn" onclick="logout()" style="display:none;" data-key="logout">تسجيل الخروج</button>
+                <button id="themeToggle" aria-label="تبديل الوضع"><i class="fas fa-moon"></i></button>
+                <button id="langToggle" aria-label="تبديل اللغة">EN</button>
+            </div>
+            <div class="hamburger" id="hamburger"><i class="fas fa-bars"></i></div>
+        </div>
+    </nav>
+
+    <!-- ===== القسم الرئيسي ===== -->
+    <header class="hero" id="mainHero">
+        <div class="container">
+            <h1 data-key="heroTitle">أدوات ذكية في مكان واحد</h1>
+            <p data-key="heroDesc">مجموعة من الأدوات المجانية مع نظام تسجيل دخول لحفظ تفضيلاتك وسجل عملياتك.</p>
+            <div class="hero-badges">
+                <span><i class="fas fa-check-circle"></i> 16 أداة</span>
+                <span><i class="fas fa-globe"></i> 3 لغات</span>
+                <span><i class="fas fa-users"></i> مجاني</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== شبكة الأدوات ===== -->
+    <section class="tools-grid container" id="toolsGrid">
+        <!-- جميع البطاقات القديمة (14 أداة) -->
+        <div class="tool-card" onclick="showTool('age')">
+            <i class="fas fa-calendar-alt"></i>
+            <h3 data-key="ageCalc">حساب العمر</h3>
+            <p data-key="ageDesc">احسب عمرك بالسنوات والأشهر والأيام.</p>
+            <span class="btn" data-key="tryNow">جرب الآن</span>
+        </div>
+        <div class="tool-card" onclick="showTool('bmi')">
+            <i class="fas fa-weight-scale"></i>
+            <h3 data-key="bmiCalc">حساب BMI</h3>
+            <p data-key="bmiDesc">احسب مؤشر كتلة الجسم واعرف حالتك الصحية.</p>
+            <span class="btn" data-key="tryNow">جرب الآن</span>
+        </div>
+        <div class="tool-card" onclick="showTool('password')">
+            <i class="fas fa-key"></i>
+            <h3 data-key="passGen">مولد كلمات المرور</h3>
+            <p data-key="passDesc">أنشئ كلمة مرور قوية وآمنة فوراً.</p>
+            <span class="btn" data-key="tryNow">جرب الآن</span>
+        </div>
+        <div class="tool-card" onclick="showTool('word')">
+            <i class="fas fa-file-alt"></i>
+            <h3 data-key="wordCount">عداد الكلمات</h3>
+            <p data-key="wordDesc">عد الكلمات، الحروف، والجمل في النص.</p>
+            <span class="btn" data-key="tryNow">جرب الآن</span>
+        </div>
+        <div class="tool-card" onclick="showTool('unit')">
+            <i class="fas fa-arrows-alt-h"></i>
+            <h3 data-key="unitConv">محول الوحدات</h3>
+            <p data-key="unitDesc">حوّل بين الكيلو والرطل، المتر والقدم.</p>
+            <span class="btn" data-key="tryNow">جرب الآن</span>
+        </div>
+        <div class="tool-card" onclick="showTool('calc')">
+            <i class="fas fa-calculator"></i>
+            <h3 data-key="simpleCalc">آلة حاسبة</h3>
+            <p data-key="calcDesc">عمليات حسابية أساسية وسريعة.</p>
+            <span class="btn" data-key="tryNow">جرب الآن</span>
+        </div>
+        <div class="tool-card" onclick="showTool('percent')">
+            <i class="fas fa-percent"></i>
+            <h3 data-key="percentCalc">حساب النسبة المئوية</h3>
+            <p data-key="percentDesc">احسب النسبة والزيادة والنقصان.</p>
+            <span class="btn" data-key="tryNow">جرب الآن</span>
+        </div>
+        <div class="tool-card" onclick="showTool('countdown')">
+            <i class="fas fa-hourglass-half"></i>
+            <h3 data-key="countdown">عداد تنازلي</h3>
+            <p data-key="countdownDesc">تعرف على الوقت المتبقي حتى حدث معين.</p>
+            <span class="btn" data-key="tryNow">جرب الآن</span>
+        </div>
+        <div class="tool-card" onclick="showTool('currency')">
+            <i class="fas fa-coins"></i>
+            <h3 data-key="currencyConv">محول العملات</h3>
+            <p data-key="currencyDesc">حوّل بين أكثر من 20 عملة عالمية.</p>
+            <span class="btn" data-key="tryNow">جرب الآن</span>
+        </div>
+        <div class="tool-card" onclick="showTool('tax')">
+            <i class="fas fa-receipt"></i>
+            <h3 data-key="taxCalc">حساب الضريبة</h3>
+            <p data-key="taxDesc">احسب قيمة الضريبة والإجمالي بسهولة.</p>
+            <span class="btn" data-key="tryNow">جرب الآن</span>
+        </div>
+        <div class="tool-card" onclick="showTool('textanalysis')">
+            <i class="fas fa-chart-pie"></i>
+            <h3 data-key="textAnalysis">تحليل النصوص</h3>
+            <p data-key="textAnalysisDesc">إحصائيات متقدمة عن النص.</p>
+            <span class="btn" data-key="tryNow">جرب الآن</span>
+        </div>
+        <div class="tool-card" onclick="showTool('textconverter')">
+            <i class="fas fa-exchange-alt"></i>
+            <h3 data-key="textConverter">محول النصوص</h3>
+            <p data-key="textConverterDesc">تحويل النص إلى كبير/صغير/عكس.</p>
+            <span class="btn" data-key="tryNow">جرب الآن</span>
+        </div>
+        <div class="tool-card" onclick="showTool('tip')">
+            <i class="fas fa-hand-holding-usd"></i>
+            <h3 data-key="tipCalc">حاسبة الإكرامية</h3>
+            <p data-key="tipDesc">احسب الإكرامية وتوزيعها على الأشخاص.</p>
+            <span class="btn" data-key="tryNow">جرب الآن</span>
+        </div>
+        <div class="tool-card" onclick="showTool('color')">
+            <i class="fas fa-palette"></i>
+            <h3 data-key="colorGen">مولد الألوان</h3>
+            <p data-key="colorDesc">توليد ألوان عشوائية مع كود HEX.</p>
+            <span class="btn" data-key="tryNow">جرب الآن</span>
+        </div>
+        <!-- ===== الأدوات الجديدة ===== -->
+        <div class="tool-card" onclick="showTool('spinwheel')">
+            <i class="fas fa-circle-notch fa-spin"></i>
+            <h3 data-key="spinWheel">عجلة الحظ</h3>
+            <p data-key="spinDesc">أضف أسماء المشاركين ودوّر العجلة لاختيار الفائز.</p>
+            <span class="btn" data-key="tryNow">جرب الآن</span>
+        </div>
+        <div class="tool-card" onclick="showTool('translator')">
+            <i class="fas fa-language"></i>
+            <h3 data-key="translatorTool">مترجم فوري</h3>
+            <p data-key="translatorDesc">ترجمة النصوص بين أكثر من 30 لغة.</p>
+            <span class="btn" data-key="tryNow">جرب الآن</span>
+        </div>
+    </section>
+
+    <!-- ===== حاوية عرض الأدوات ===== -->
+    <div id="toolDisplay" style="display: none; padding: 20px 0; opacity:0; transition: opacity 0.4s;">
+        <div class="container">
+            <button onclick="showHome()" class="btn back-btn"><i class="fas fa-arrow-right"></i> <span data-key="backHome">العودة للرئيسية</span></button>
+            <div id="toolContent"></div>
+        </div>
+    </div>
+
+    <!-- ===== الصفحات الإضافية ===== -->
+    <div id="pageDisplay" style="display: none; padding: 40px 0;">
+        <div class="container">
+            <button onclick="showHome()" class="btn back-btn"><i class="fas fa-arrow-right"></i> <span data-key="backHome">العودة للرئيسية</span></button>
+            <div id="pageContent"></div>
+        </div>
+    </div>
+
+    <!-- ===== مودال تسجيل الدخول ===== -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLoginModal()">&times;</span>
+            <h2 data-key="loginTitle">تسجيل الدخول / إنشاء حساب</h2>
+            <div id="loginForm">
+                <label data-key="username">اسم المستخدم</label>
+                <input type="text" id="loginUsername" placeholder="أدخل اسم المستخدم">
+                <label data-key="password">كلمة المرور</label>
+                <input type="password" id="loginPassword" placeholder="أدخل كلمة المرور">
+                <label data-key="email">البريد الإلكتروني (اختياري)</label>
+                <input type="email" id="loginEmail" placeholder="example@mail.com">
+                <button onclick="registerOrLogin()" class="btn" style="width:100%; margin-top:15px;" data-key="loginRegister">تسجيل الدخول / إنشاء حساب</button>
+                <p style="margin-top:10px; font-size:0.9rem; opacity:0.7;" data-key="loginHint">إذا لم يكن لديك حساب، سيتم إنشاؤه تلقائياً.</p>
+            </div>
+            <div id="userInfo" style="display:none;">
+                <p><span data-key="welcome">مرحباً</span> <span id="displayUsername"></span>!</p>
+                <button onclick="logout()" class="btn" style="background:#dc2626;" data-key="logout">تسجيل الخروج</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== تذييل الصفحة ===== -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2026 Smart Tools Hub – جميع الحقوق محفوظة. | 
+                    <a href="#" onclick="showHome()" data-key="home">الرئيسية</a> | 
+                    <a href="#" onclick="showPage('about')" data-key="about">من نحن</a> | 
+                    <a href="#" onclick="showPage('contact')" data-key="contact">اتصل بنا</a> |
+                    <a href="#" onclick="showPage('privacy')" data-key="privacy">الخصوصية</a> |
+                    <a href="#" onclick="showPage('terms')" data-key="terms">الشروط</a>
+                </p>
+                <div class="footer-extra">
+                    <button class="donate-btn" onclick="window.open('https://www.paypal.com/donate?hosted_button_id=YOUR_ID', '_blank')">
+                        <i class="fas fa-heart"></i> <span data-key="donate">ادعم الموقع</span>
+                    </button>
+                    <span class="dev-signature-footer">RAMI_DEV</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
