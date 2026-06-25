@@ -4,7 +4,6 @@
 
 const translations = {
     ar: {
-        // القائمة والتنقل
         home: 'الرئيسية',
         about: 'من نحن',
         contact: 'اتصل بنا',
@@ -22,7 +21,6 @@ const translations = {
         donate: 'ادعم الموقع',
         heroTitle: 'أدوات ذكية في مكان واحد',
         heroDesc: 'مجموعة من الأدوات المجانية مع نظام تسجيل دخول لحفظ تفضيلاتك وسجل عملياتك.',
-        // الأدوات القديمة
         ageCalc: 'حساب العمر',
         ageDesc: 'احسب عمرك بالسنوات والأشهر والأيام.',
         bmiCalc: 'حساب BMI',
@@ -51,7 +49,6 @@ const translations = {
         tipDesc: 'احسب الإكرامية وتوزيعها على الأشخاص.',
         colorGen: 'مولد الألوان',
         colorDesc: 'توليد ألوان عشوائية مع كود HEX.',
-        // الأدوات الجديدة
         spinWheel: 'عجلة الحظ',
         spinDesc: 'أضف أسماء المشاركين ودوّر العجلة لاختيار الفائز.',
         playerName: 'اسم المشارك',
@@ -64,10 +61,8 @@ const translations = {
         enterText: 'أدخل النص للترجمة',
         translate: 'ترجمة',
         translationResult: 'الترجمة ستظهر هنا',
-        // مفاتيح عامة
         tryNow: 'جرب الآن',
         backHome: 'العودة للرئيسية',
-        // مفاتيح الأدوات القديمة (تفاصيل)
         bmiHeight: 'الطول (سم)',
         bmiWeight: 'الوزن (كجم)',
         bmiResult: 'نتيجة BMI',
@@ -106,7 +101,6 @@ const translations = {
         uniqueWords: 'الكلمات الفريدة',
         avgWordLength: 'متوسط طول الكلمة',
         wordFrequency: 'تكرار الكلمات',
-        // أدوات جديدة أخرى
         tipAmount: 'المبلغ الإجمالي',
         tipPercent: 'نسبة الإكرامية (%)',
         tipPeople: 'عدد الأشخاص',
@@ -377,12 +371,10 @@ function toggleTheme() {
     applyTheme(newTheme);
 }
 
-function updateDynamicTexts() {
-    // تُستدعى عند تغيير اللغة لتحديث أي نصوص ديناميكية
-}
+function updateDynamicTexts() {}
 
 // ============================================================
-// 4. نظام المستخدمين (بقاء الجلسة)
+// 4. نظام المستخدمين
 // ============================================================
 
 function getUsers() {
@@ -550,7 +542,6 @@ function showTool(toolId) {
         default: container.innerHTML = '<p>الأداة غير موجودة.</p>';
     }
     applyLanguage(currentLang);
-    // تهيئة الأدوات الخاصة
     if (toolId === 'countdown') initCountdown();
     if (toolId === 'word') initWordCounter();
     if (toolId === 'calc') initCalculator();
@@ -591,7 +582,7 @@ function showPage(pageId) {
 }
 
 // ============================================================
-// 6. صفحات المحتوى (من نحن، اتصل بنا، الخصوصية، الشروط)
+// 6. صفحات المحتوى
 // ============================================================
 
 function getAboutPage() {
@@ -668,10 +659,9 @@ function getTermsPage() {
 }
 
 // ============================================================
-// 7. دوال الأدوات (جميع الأدوات القديمة والجديدة)
+// 7. دوال الأدوات (جميع الأدوات القديمة)
 // ============================================================
 
-// ----- حساب العمر -----
 function getAgeTool() {
     return `
     <div class="tool-box">
@@ -700,7 +690,6 @@ function calculateAge() {
     saveOperation('حساب العمر', `${years} سنة، ${months} شهر، ${days} يوم`);
 }
 
-// ----- BMI -----
 function getBmiTool() {
     return `
     <div class="tool-box">
@@ -731,7 +720,6 @@ function calculateBMI() {
     saveOperation('حساب BMI', `${bmi.toFixed(2)} - ${status}`);
 }
 
-// ----- مولد كلمات المرور -----
 function getPasswordTool() {
     return `
     <div class="tool-box">
@@ -752,7 +740,6 @@ function generatePassword() {
     saveOperation('مولد كلمات المرور', `طول ${len}`);
 }
 
-// ----- عداد الكلمات -----
 function getWordTool() {
     return `
     <div class="tool-box">
@@ -778,7 +765,6 @@ function countWords() {
     document.getElementById('sentenceCount').textContent = sentences;
 }
 
-// ----- محول الوحدات -----
 function getUnitTool() {
     return `
     <div class="tool-box">
@@ -816,7 +802,6 @@ function convertUnit() {
     saveOperation('تحويل وحدات', result);
 }
 
-// ----- آلة حاسبة -----
 function getCalcTool() {
     return `
     <div class="tool-box">
@@ -868,7 +853,6 @@ function calcResult() {
     }
 }
 
-// ----- النسبة المئوية -----
 function getPercentTool() {
     return `
     <div class="tool-box">
@@ -895,7 +879,6 @@ function calculatePercent() {
     saveOperation('نسبة مئوية', `${rate}% من ${val} = ${result.toFixed(2)}`);
 }
 
-// ----- عداد تنازلي -----
 function getCountdownTool() {
     return `
     <div class="tool-box">
@@ -944,7 +927,6 @@ function startCountdown() {
     }, 1000);
 }
 
-// ----- محول العملات (20+ عملة) -----
 function getCurrencyTool() {
     return `
     <div class="tool-box">
@@ -1001,7 +983,6 @@ function convertCurrency() {
     saveOperation('تحويل عملات', `${amount} ${from} → ${result.toFixed(2)} ${to}`);
 }
 
-// ----- حساب الضريبة -----
 function getTaxTool() {
     return `
     <div class="tool-box">
@@ -1033,7 +1014,6 @@ function calculateTax() {
     saveOperation('حساب الضريبة', `ضريبة=${tax.toFixed(2)}, إجمالي=${total.toFixed(2)}`);
 }
 
-// ----- تحليل النصوص -----
 function getTextAnalysisTool() {
     return `
     <div class="tool-box">
@@ -1067,7 +1047,6 @@ function analyzeText() {
     saveOperation('تحليل نصوص', `كلمات=${words.length}, فريدة=${unique.size}`);
 }
 
-// ----- محول النصوص -----
 function getTextConverterTool() {
     return `
     <div class="tool-box">
@@ -1093,7 +1072,6 @@ function convertText(type) {
     saveOperation('تحويل نص', type);
 }
 
-// ----- حاسبة الإكرامية -----
 function getTipTool() {
     return `
     <div class="tool-box">
@@ -1130,7 +1108,6 @@ function calculateTip() {
     saveOperation('حساب الإكرامية', `إكرامية لكل شخص=${tipPerPerson.toFixed(2)}`);
 }
 
-// ----- مولد الألوان -----
 function getColorTool() {
     return `
     <div class="tool-box">
@@ -1154,7 +1131,6 @@ function generateColor() {
 // 8. أدوات جديدة: عجلة الحظ + مترجم فوري
 // ============================================================
 
-// ----- عجلة الحظ -----
 function getSpinWheelTool() {
     return `
     <div class="tool-box">
@@ -1212,6 +1188,20 @@ function updateWheelUI() {
     drawWheel();
 }
 
+// ============================================================
+// ★★★★★ دالة drawWheel() المُصلحة – الأسماء تظهر بوضوح ★★★★★
+// ============================================================
+
+// ============================================================
+// دالة drawWheel() – باستخدام Canvas (طريقة مضمونة 100%)
+// ============================================================
+
+// ============================================================
+// دالة drawWheel() – رسم العجلة باستخدام Canvas مع تتبع الزوايا
+// ============================================================
+
+let currentRotation = 0; // تخزين زاوية الدوران الحالية
+
 function drawWheel() {
     const wheel = document.getElementById('wheel');
     if (!wheel) return;
@@ -1220,43 +1210,171 @@ function drawWheel() {
         wheel.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#94a3b8;font-size:1.2rem;">أضف أسماء</div>';
         return;
     }
-    const colors = wheelColors.slice(0, count);
-    while (colors.length < count) colors.push('#4f46e5');
-    let html = '';
-    const angle = 360 / count;
+    
+    // إنشاء عنصر Canvas
+    const canvas = document.createElement('canvas');
+    canvas.width = 300;
+    canvas.height = 300;
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    canvas.style.borderRadius = '50%';
+    wheel.innerHTML = '';
+    wheel.appendChild(canvas);
+    
+    const ctx = canvas.getContext('2d');
+    const centerX = 150;
+    const centerY = 150;
+    const radius = 140;
+    
+    const colors = ['#4f46e5', '#7c3aed', '#ec4899', '#f59e0b', '#10b981', '#3b82f6', '#ef4444', '#8b5cf6', '#14b8a6', '#f472b6'];
+    const angle = (2 * Math.PI) / count;
+    
+    // حفظ زوايا الأجزاء لاستخدامها لاحقاً
+    window._wheelSegments = [];
+    
     wheelPlayers.forEach((name, i) => {
-        const rotate = i * angle;
-        html += `<div class="wheel-segment" style="transform: rotate(${rotate}deg); background: ${colors[i % colors.length]};">
-            <span style="transform: rotate(${90 - angle/2}deg); display:inline-block; white-space:nowrap; font-size:0.8rem;">${name}</span>
-        </div>`;
+        const startAngle = i * angle;
+        const endAngle = startAngle + angle;
+        const midAngle = startAngle + angle / 2;
+        
+        // تخزين معلومات القطاع
+        window._wheelSegments.push({
+            name: name,
+            startAngle: startAngle,
+            endAngle: endAngle,
+            midAngle: midAngle,
+            index: i
+        });
+        
+        // رسم القطاع
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+        ctx.closePath();
+        ctx.fillStyle = colors[i % colors.length];
+        ctx.fill();
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        
+        // رسم النص
+        ctx.save();
+        ctx.translate(centerX, centerY);
+        ctx.rotate(midAngle);
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = '#ffffff';
+        ctx.shadowColor = 'rgba(0,0,0,0.6)';
+        ctx.shadowBlur = 8;
+        
+        let fontSize = 16;
+        if (count > 12) fontSize = 10;
+        else if (count > 8) fontSize = 12;
+        else if (count > 5) fontSize = 14;
+        ctx.font = `bold ${fontSize}px 'Tajawal', 'Segoe UI', sans-serif`;
+        
+        ctx.fillText(name, radius * 0.65, 0);
+        ctx.restore();
     });
-    wheel.innerHTML = html;
-    wheel.style.transform = 'rotate(0deg)';
+    
+    // رسم الدائرة الداخلية
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, 32, 0, 2 * Math.PI);
+    ctx.fillStyle = '#4f46e5';
+    ctx.fill();
+    ctx.shadowColor = 'rgba(0,0,0,0.3)';
+    ctx.shadowBlur = 15;
+    
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 18px "Tajawal", sans-serif';
+    ctx.shadowColor = 'rgba(0,0,0,0.5)';
+    ctx.shadowBlur = 10;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('حظ', centerX, centerY);
+    
+    // إعادة تعيين الدوران
+    canvas.style.transform = 'rotate(0deg)';
+    currentRotation = 0;
 }
+
+// ============================================================
+// دالة spinWheel() – مع حساب دقيق للفائز
+// ============================================================
 
 function spinWheel() {
     const wheel = document.getElementById('wheel');
+    const canvas = wheel.querySelector('canvas');
+    if (!canvas) {
+        alert('الرجاء إعادة تحميل الصفحة والمحاولة مرة أخرى.');
+        return;
+    }
     const count = wheelPlayers.length;
-    if (count === 0) { alert('الرجاء إضافة مشاركين أولاً.'); return; }
+    if (count === 0) {
+        alert('الرجاء إضافة مشاركين أولاً.');
+        return;
+    }
+    
     const spinBtn = document.getElementById('spinBtn');
     spinBtn.disabled = true;
     spinBtn.style.opacity = '0.6';
+    
+    // اختيار فائز عشوائي
     const winnerIndex = Math.floor(Math.random() * count);
     const anglePer = 360 / count;
-    const targetAngle = 360 - (winnerIndex * anglePer + anglePer/2) + 90;
-    const spins = 5 + Math.floor(Math.random() * 3);
-    const totalRotation = spins * 360 + targetAngle;
-    wheel.style.transform = `rotate(${totalRotation}deg)`;
+    
+    // حساب زاوية الفائز
+    const midAngle = winnerIndex * anglePer + anglePer / 2;
+    
+    // عدد الدورات الكاملة (ثابت لتكون السرعة متساوية)
+    const spins = 8 + Math.floor(Math.random() * 3); // 8-10 دورات
+    
+    // الزاوية المستهدفة = عدد الدورات × 360 + الزاوية المطلوبة
+    // نضيف 90 درجة لتعديل اتجاه المؤشر (الذي في الأسفل)
+    const targetAngle = spins * 360 + (360 - midAngle + 90);
+    
+    // 🔥 التغيير المهم: إزالة أي دوران سابق قبل تطبيق الجديد
+    canvas.style.transition = 'none';
+    canvas.style.transform = 'rotate(0deg)';
+    
+    // فرض إعادة الرسم
+    void canvas.offsetHeight; // إجبار المتصفح على إعادة الحساب
+    
+    // تطبيق الدوران الجديد مع انتقال سلس
+    requestAnimationFrame(() => {
+        canvas.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)';
+        canvas.style.transform = `rotate(${targetAngle}deg)`;
+    });
+    
+    // الفائز
+    const winner = wheelPlayers[winnerIndex];
+    
     setTimeout(() => {
-        const winner = wheelPlayers[winnerIndex];
-        document.getElementById('winnerName').textContent = winner;
+        const winnerSpan = document.getElementById('winnerName');
+        winnerSpan.textContent = winner;
+        winnerSpan.style.color = '#10b981';
+        winnerSpan.style.fontSize = '1.8rem';
+        winnerSpan.style.transition = 'all 0.5s ease';
+        
+        const resultBox = document.getElementById('wheelResult');
+        resultBox.style.borderColor = '#10b981';
+        resultBox.style.background = 'rgba(16, 185, 129, 0.08)';
+        
+        setTimeout(() => {
+            resultBox.style.borderColor = '#4f46e5';
+            resultBox.style.background = '';
+        }, 3000);
+        
         spinBtn.disabled = false;
         spinBtn.style.opacity = '1';
         saveOperation('عجلة الحظ', `الفائز: ${winner}`);
-    }, 4500);
+    }, 4200);
 }
 
-// ----- مترجم فوري -----
+// ============================================================
+// 9. مترجم فوري
+// ============================================================
+
 function getTranslatorTool() {
     const languages = getLanguageList();
     return `
@@ -1326,7 +1444,7 @@ function translateText() {
 }
 
 // ============================================================
-// 9. SEO – تحديث meta ديناميكياً
+// 10. SEO
 // ============================================================
 
 function updateSEOMeta(toolId = 'home') {
@@ -1389,7 +1507,7 @@ function updateSEOMeta(toolId = 'home') {
 }
 
 // ============================================================
-// 10. تهيئة الصفحة عند التحميل
+// 11. تهيئة الصفحة عند التحميل
 // ============================================================
 
 document.addEventListener('DOMContentLoaded', () => {
