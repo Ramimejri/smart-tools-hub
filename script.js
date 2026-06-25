@@ -603,7 +603,7 @@ function getContactPage() {
         <h1>اتصل بنا</h1>
         <p>نرحب بملاحظاتكم واستفساراتكم. يمكنكم التواصل معنا عبر:</p>
         <ul style="list-style:none; padding:0; margin:15px 0;">
-            <li style="margin:10px 0;"><i class="fas fa-envelope" style="color:#4f46e5; width:30px;"></i> support@smarttools.com</li>
+            <li style="margin:10px 0;"><i class="fas fa-envelope" style="color:#4f46e5; width:30px;"></i> supportsmattools@gmail.com</li>
             <li style="margin:10px 0;"><i class="fab fa-twitter" style="color:#4f46e5; width:30px;"></i> @SmartToolsHub</li>
             <li style="margin:10px 0;"><i class="fab fa-facebook" style="color:#4f46e5; width:30px;"></i> /SmartToolsHub</li>
         </ul>
