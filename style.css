@@ -810,11 +810,11 @@ footer a:hover {
    أدوات جديدة: عجلة الحظ + مترجم
    ============================================================ */
 
-/* ----- عجلة الحظ ----- */
+/* ----- عجلة الحظ (نسخة محسنة) ----- */
 .wheel-container {
     position: relative;
-    width: 300px;
-    height: 300px;
+    width: 320px;
+    height: 320px;
     margin: 25px auto;
 }
 
@@ -829,6 +829,7 @@ footer a:hover {
     background: #e2e8f0;
 }
 
+/* أجزاء العجلة - كل جزء مثلث */
 .wheel-segment {
     position: absolute;
     width: 50%;
@@ -839,21 +840,31 @@ footer a:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
-    font-size: 0.85rem;
-    color: #fff;
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
     clip-path: polygon(0 0, 100% 0, 0 100%);
     transition: background 0.2s;
+    overflow: visible;
 }
 
+/* النص داخل كل جزء - يظهر بوضوح */
 .wheel-segment span {
-    transform: rotate(0deg);
-    display: inline-block;
-    white-space: nowrap;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-weight: 700;
     font-size: 0.9rem;
-    font-weight: 600;
-    letter-spacing: 0.3px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+    text-align: center;
+    width: 70px;
+}
+
+/* إذا كان عدد المشاركين كبيراً، صغر حجم الخط */
+.wheel-segment span.small-text {
+    font-size: 0.7rem;
 }
 
 .wheel-center {
@@ -908,6 +919,7 @@ footer a:hover {
     gap: 10px;
     margin: 12px 0 18px;
     min-height: 40px;
+    justify-content: center;
 }
 
 .wheel-player-tag {
@@ -1029,8 +1041,12 @@ footer a:hover {
         font-size: 2.6rem;
     }
     .wheel-container {
-        width: 250px;
-        height: 250px;
+        width: 280px;
+        height: 280px;
+    }
+    .wheel-segment span {
+        font-size: 0.8rem !important;
+        width: 60px !important;
     }
 }
 
@@ -1113,8 +1129,8 @@ footer a:hover {
     }
 
     .wheel-container {
-        width: 220px;
-        height: 220px;
+        width: 240px;
+        height: 240px;
     }
     .wheel-center {
         width: 50px;
@@ -1128,7 +1144,8 @@ footer a:hover {
         border-top-width: 28px;
     }
     .wheel-segment span {
-        font-size: 0.7rem;
+        font-size: 0.7rem !important;
+        width: 50px !important;
     }
 
     .translator-lang-select {
@@ -1189,22 +1206,31 @@ footer a:hover {
         font-size: 0.95rem;
     }
     .wheel-container {
-        width: 180px;
-        height: 180px;
+        width: 190px;
+        height: 190px;
     }
     .wheel-center {
         width: 40px;
         height: 40px;
         font-size: 0.8rem;
     }
+    /* المؤشر (المثلث الأحمر) في الأسفل */
     .wheel-pointer {
-        top: -12px;
-        border-left-width: 12px;
-        border-right-width: 12px;
-        border-top-width: 22px;
+        position: absolute;
+        bottom: -25px;
+        left: 50%;
+        transform: translateX(-50%) rotate(180deg);
+        width: 0;
+        height: 0;
+        border-left: 22px solid transparent;
+        border-right: 22px solid transparent;
+        border-bottom: 38px solid #dc2626;
+        z-index: 20;
+       filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
     }
     .wheel-segment span {
-        font-size: 0.6rem;
+        font-size: 0.6rem !important;
+        width: 40px !important;
     }
 }
 
@@ -1231,8 +1257,12 @@ footer a:hover {
         padding: 50px;
     }
     .wheel-container {
-        width: 380px;
-        height: 380px;
+        width: 400px;
+        height: 400px;
+    }
+    .wheel-segment span {
+        font-size: 1rem !important;
+        width: 80px !important;
     }
 }
 
@@ -1343,6 +1373,7 @@ body.dark #countdownDisplay span {
     gap:8px;
     font-weight:bold;
 }
+
 /* زر التبرع – Brave Style */
 .donate-btn-brave {
     background: linear-gradient(135deg, #ff5722, #ff3d00);
@@ -1366,5 +1397,15 @@ body.dark #countdownDisplay span {
 .donate-btn-brave i {
     margin-left: 8px;
 }
+/* ===== إصلاح المؤشر - وضعه في الأسفل ===== */
+.wheel-container .wheel-pointer {
+    top: auto !important;
+    bottom: -25px !important;
+    left: 50% !important;
+    transform: translateX(-50%) rotate(0deg) !important;
+    border-top: none !important;
+    border-bottom: 38px solid #dc2626 !important;
+}
+
 
 /* نهاية الملف */
