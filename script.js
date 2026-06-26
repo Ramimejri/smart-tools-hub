@@ -539,6 +539,18 @@ function showTool(toolId) {
         case 'color': container.innerHTML = getColorTool(); break;
         case 'spinwheel': container.innerHTML = getSpinWheelTool(); break;
         case 'translator': container.innerHTML = getTranslatorTool(); break;
+        case 'qrcode': container.innerHTML = getQRCodeTool(); break;
+        case 'summarizer': container.innerHTML = getSummarizerTool(); break;
+        case 'seo': container.innerHTML = getSEOTool(); break;
+        case 'imgcompress': container.innerHTML = getImgCompressTool(); break;
+        case 'passcheck': container.innerHTML = getPassCheckTool(); break;
+        case 'imgtopdf': container.innerHTML = getImgToPDFTool(); break;
+        case 'imgconvert': container.innerHTML = getImgConvertTool(); break;
+        case 'myip': container.innerHTML = getMyIPTool(); break;
+        case 'speedtest': container.innerHTML = getSpeedTestTool(); break;
+        case 'deduplicate': container.innerHTML = getDeduplicateTool(); break;
+        case 'textbullet': container.innerHTML = getTextBulletTool(); break;
+        case 'spellcheck': container.innerHTML = getSpellCheckTool(); break;
         default: container.innerHTML = '<p>الأداة غير موجودة.</p>';
     }
     applyLanguage(currentLang);
@@ -550,6 +562,8 @@ function showTool(toolId) {
     if (toolId === 'textanalysis') initTextAnalysis();
     if (toolId === 'spinwheel') initSpinWheel();
     if (toolId === 'translator') initTranslator();
+    if (toolId === 'myip') initMyIP();
+    if (toolId === 'speedtest') initSpeedTest();
     
     setTimeout(() => { display.style.opacity = 1; }, 50);
     
@@ -603,7 +617,7 @@ function getContactPage() {
         <h1>اتصل بنا</h1>
         <p>نرحب بملاحظاتكم واستفساراتكم. يمكنكم التواصل معنا عبر:</p>
         <ul style="list-style:none; padding:0; margin:15px 0;">
-            <li style="margin:10px 0;"><i class="fas fa-envelope" style="color:#4f46e5; width:30px;"></i> supportsmattools@gmail.com</li>
+            <li style="margin:10px 0;"><i class="fas fa-envelope" style="color:#4f46e5; width:30px;"></i> support@smarttools.com</li>
             <li style="margin:10px 0;"><i class="fab fa-twitter" style="color:#4f46e5; width:30px;"></i> @SmartToolsHub</li>
             <li style="margin:10px 0;"><i class="fab fa-facebook" style="color:#4f46e5; width:30px;"></i> /SmartToolsHub</li>
         </ul>
@@ -1444,7 +1458,773 @@ function translateText() {
 }
 
 // ============================================================
-// 10. SEO
+// 10. الأدوات الجديدة (12 أداة)
+// ============================================================
+
+// ── QR Code Generator ──────────────────────────────────────
+function getQRCodeTool() {
+    return `
+    <div class="tool-box">
+        <h2><i class="fas fa-qrcode"></i> مولّد QR Code</h2>
+        <label for="qrInput">النص أو الرابط</label>
+        <input type="text" id="qrInput" placeholder="https://example.com أو أي نص" value="https://ramimejri.github.io/smart-tools-hub/">
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">
+            <label style="margin:0;line-height:2;">الحجم:</label>
+            <select id="qrSize" style="width:auto;">
+                <option value="128">128×128</option>
+                <option value="200" selected>200×200</option>
+                <option value="300">300×300</option>
+            </select>
+            <label style="margin:0;line-height:2;">اللون:</label>
+            <input type="color" id="qrColor" value="#4f46e5" style="width:44px;height:38px;padding:2px;border-radius:8px;border:1px solid #ccc;cursor:pointer;">
+        </div>
+        <button class="btn" onclick="generateQR()" style="margin-top:12px;"><i class="fas fa-qrcode"></i> إنشاء QR Code</button>
+        <div class="result-box" id="qrResult" style="text-align:center;">
+            <div id="qrCanvas" style="display:inline-block;margin:10px auto;"></div>
+            <br>
+            <button class="btn" id="qrDownload" onclick="downloadQR()" style="display:none;background:#10b981;margin-top:10px;"><i class="fas fa-download"></i> تحميل الصورة</button>
+        </div>
+    </div>`;
+}
+
+function generateQR() {
+    const text = document.getElementById('qrInput').value.trim();
+    const size = parseInt(document.getElementById('qrSize').value);
+    const color = document.getElementById('qrColor').value;
+    if (!text) { alert('الرجاء إدخال نص أو رابط.'); return; }
+    const container = document.getElementById('qrCanvas');
+    container.innerHTML = '';
+    new QRCode(container, {
+        text: text,
+        width: size,
+        height: size,
+        colorDark: color,
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.H
+    });
+    document.getElementById('qrDownload').style.display = 'inline-block';
+    saveOperation('QR Code', text.substring(0, 50));
+}
+
+function downloadQR() {
+    const canvas = document.querySelector('#qrCanvas canvas');
+    if (!canvas) { alert('أنشئ QR Code أولاً.'); return; }
+    const link = document.createElement('a');
+    link.download = 'qrcode.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+}
+
+// ── Text Summarizer (AI) ───────────────────────────────────
+function getSummarizerTool() {
+    return `
+    <div class="tool-box">
+        <h2><i class="fas fa-brain"></i> ملخّص النصوص الذكي</h2>
+        <label for="summInput">أدخل النص المراد تلخيصه</label>
+        <textarea id="summInput" style="min-height:160px;" placeholder="الصق هنا نصاً طويلاً لتحصل على ملخص ذكي..."></textarea>
+        <div style="display:flex;gap:10px;align-items:center;margin-top:10px;flex-wrap:wrap;">
+            <label style="margin:0;">نسبة التلخيص:</label>
+            <input type="range" id="summRatio" min="10" max="50" value="30" style="width:150px;"> 
+            <span id="summRatioVal">30%</span>
+        </div>
+        <button class="btn" onclick="summarizeText()" style="margin-top:12px;"><i class="fas fa-magic"></i> لخّص النص</button>
+        <div class="result-box" id="summResult" style="display:none;white-space:pre-line;"></div>
+    </div>`;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.body.addEventListener('input', e => {
+        if (e.target && e.target.id === 'summRatio') {
+            const el = document.getElementById('summRatioVal');
+            if (el) el.textContent = e.target.value + '%';
+        }
+    });
+});
+
+function summarizeText() {
+    const text = document.getElementById('summInput').value.trim();
+    const ratio = parseInt(document.getElementById('summRatio').value) / 100;
+    if (text.length < 100) { alert('الرجاء إدخال نص أطول (100 حرف على الأقل).'); return; }
+    
+    // Extractive summarization using TF-IDF scoring
+    const sentences = text.match(/[^.!?؟\n]+[.!?؟\n]*/g) || text.split('\n').filter(s => s.trim());
+    if (sentences.length < 2) { alert('النص قصير جداً أو لا يحتوي على جمل واضحة.'); return; }
+    
+    const words = text.toLowerCase().split(/\s+/);
+    const stopWords = new Set(['the','a','an','is','in','it','of','to','and','or','but','this','that','with','for','on','at','by','من','في','على','إلى','هذا','هذه','ان','أن','التي','الذي','كان','ما','هو','هي','لا','مع','عن','بعد','قبل','كل','بين','حتى','لكن','إن','أو']);
+    const wordFreq = {};
+    words.forEach(w => {
+        const clean = w.replace(/[^\u0600-\u06FFa-zA-Z]/g, '');
+        if (clean.length > 2 && !stopWords.has(clean)) {
+            wordFreq[clean] = (wordFreq[clean] || 0) + 1;
+        }
+    });
+    
+    const scored = sentences.map(sent => {
+        const sentWords = sent.toLowerCase().split(/\s+/);
+        let score = 0;
+        sentWords.forEach(w => {
+            const clean = w.replace(/[^\u0600-\u06FFa-zA-Z]/g, '');
+            if (wordFreq[clean]) score += wordFreq[clean];
+        });
+        return { sent: sent.trim(), score: score / (sentWords.length || 1) };
+    });
+    
+    const keepCount = Math.max(1, Math.round(sentences.length * ratio));
+    const topSentences = scored.slice().sort((a, b) => b.score - a.score).slice(0, keepCount);
+    const orderedResult = scored.filter(s => topSentences.includes(s)).map(s => s.sent).join(' ');
+    
+    const resultEl = document.getElementById('summResult');
+    resultEl.style.display = 'block';
+    resultEl.innerHTML = `<strong>📋 الملخص (${keepCount} جملة من ${sentences.length}):</strong><br><br>${orderedResult}`;
+    saveOperation('تلخيص نص', `${sentences.length} جملة → ${keepCount} جملة`);
+}
+
+// ── SEO Analyzer ───────────────────────────────────────────
+function getSEOTool() {
+    return `
+    <div class="tool-box">
+        <h2><i class="fas fa-search"></i> محلّل SEO</h2>
+        <label for="seoTitle">عنوان الصفحة (Title)</label>
+        <input type="text" id="seoTitle" placeholder="عنوان صفحتك هنا..." maxlength="200">
+        <label for="seoDesc">الوصف (Meta Description)</label>
+        <input type="text" id="seoDesc" placeholder="وصف الصفحة هنا..." maxlength="300">
+        <label for="seoKeyword">الكلمة المفتاحية الرئيسية</label>
+        <input type="text" id="seoKeyword" placeholder="مثال: أدوات مجانية">
+        <label for="seoContent">محتوى الصفحة</label>
+        <textarea id="seoContent" style="min-height:130px;" placeholder="الصق محتوى صفحتك هنا..."></textarea>
+        <button class="btn" onclick="analyzeSEO()" style="margin-top:12px;"><i class="fas fa-chart-bar"></i> حلّل الآن</button>
+        <div id="seoResult" style="display:none;margin-top:15px;"></div>
+    </div>`;
+}
+
+function analyzeSEO() {
+    const title = document.getElementById('seoTitle').value.trim();
+    const desc = document.getElementById('seoDesc').value.trim();
+    const keyword = document.getElementById('seoKeyword').value.trim().toLowerCase();
+    const content = document.getElementById('seoContent').value.trim();
+    
+    let score = 0;
+    let issues = [];
+    let good = [];
+    
+    // Title checks
+    if (!title) { issues.push('❌ عنوان الصفحة مفقود.'); }
+    else if (title.length < 30) { issues.push(`⚠️ العنوان قصير (${title.length} حرف) – المثالي: 50-60 حرف.`); score += 5; }
+    else if (title.length > 65) { issues.push(`⚠️ العنوان طويل جداً (${title.length} حرف) – المثالي: 50-60 حرف.`); score += 5; }
+    else { good.push(`✅ طول العنوان مثالي (${title.length} حرف).`); score += 15; }
+    
+    if (keyword && title.toLowerCase().includes(keyword)) { good.push('✅ الكلمة المفتاحية موجودة في العنوان.'); score += 15; }
+    else if (keyword) { issues.push('❌ الكلمة المفتاحية غير موجودة في العنوان.'); }
+    
+    // Description checks
+    if (!desc) { issues.push('❌ الوصف (Meta Description) مفقود.'); }
+    else if (desc.length < 100) { issues.push(`⚠️ الوصف قصير (${desc.length} حرف) – المثالي: 150-160 حرف.`); score += 5; }
+    else if (desc.length > 165) { issues.push(`⚠️ الوصف طويل جداً (${desc.length} حرف) – المثالي: 150-160 حرف.`); score += 5; }
+    else { good.push(`✅ طول الوصف مثالي (${desc.length} حرف).`); score += 15; }
+    
+    if (keyword && desc.toLowerCase().includes(keyword)) { good.push('✅ الكلمة المفتاحية موجودة في الوصف.'); score += 10; }
+    else if (keyword) { issues.push('⚠️ الكلمة المفتاحية غير موجودة في الوصف.'); }
+    
+    // Content checks
+    if (content) {
+        const wordCount = content.split(/\s+/).filter(Boolean).length;
+        if (wordCount < 300) { issues.push(`⚠️ المحتوى قصير (${wordCount} كلمة) – يفضّل 600+ كلمة.`); score += 5; }
+        else if (wordCount < 600) { good.push(`✅ المحتوى مقبول (${wordCount} كلمة).`); score += 10; }
+        else { good.push(`✅ المحتوى جيد (${wordCount} كلمة).`); score += 20; }
+        
+        if (keyword) {
+            const keyCount = (content.toLowerCase().split(keyword).length - 1);
+            const density = ((keyCount / wordCount) * 100).toFixed(1);
+            if (density < 0.5) { issues.push(`⚠️ كثافة الكلمة المفتاحية منخفضة (${density}%) – المثالي: 1%-2%.`); }
+            else if (density > 3) { issues.push(`⚠️ كثافة الكلمة المفتاحية عالية جداً (${density}%) – تجنّب Keyword Stuffing.`); score += 5; }
+            else { good.push(`✅ كثافة الكلمة المفتاحية جيدة (${density}%).`); score += 15; }
+        }
+    } else { issues.push('⚠️ لم يتم إدخال محتوى للتحليل.'); }
+    
+    score = Math.min(score, 100);
+    const color = score >= 70 ? '#10b981' : score >= 40 ? '#f59e0b' : '#ef4444';
+    const label = score >= 70 ? 'جيد' : score >= 40 ? 'متوسط' : 'ضعيف';
+    
+    const resultEl = document.getElementById('seoResult');
+    resultEl.style.display = 'block';
+    resultEl.innerHTML = `
+        <div style="text-align:center;margin-bottom:15px;">
+            <div style="display:inline-block;width:90px;height:90px;border-radius:50%;border:6px solid ${color};line-height:78px;font-size:1.8rem;font-weight:700;color:${color};">${score}</div>
+            <div style="color:${color};font-weight:700;font-size:1.1rem;margin-top:5px;">${label}</div>
+        </div>
+        <div class="result-box" style="border-right-color:${color};">
+            ${good.map(g => `<p style="color:#10b981;">${g}</p>`).join('')}
+            ${issues.map(i => `<p style="color:${i.startsWith('❌') ? '#ef4444' : '#f59e0b'};">${i}</p>`).join('')}
+        </div>`;
+    saveOperation('تحليل SEO', `النتيجة: ${score}/100`);
+}
+
+// ── Image Compressor ───────────────────────────────────────
+function getImgCompressTool() {
+    return `
+    <div class="tool-box">
+        <h2><i class="fas fa-compress-alt"></i> ضاغط الصور</h2>
+        <label>اختر الصورة</label>
+        <input type="file" id="compressInput" accept="image/*" onchange="previewCompress()">
+        <div id="compressPreviewArea" style="display:none;margin-top:10px;">
+            <img id="compressPreview" style="max-width:100%;max-height:200px;border-radius:10px;border:1px solid #e2e8f0;">
+        </div>
+        <label style="margin-top:12px;">جودة الضغط: <span id="compressQualVal">70</span>%</label>
+        <input type="range" id="compressQual" min="10" max="99" value="70" oninput="document.getElementById('compressQualVal').textContent=this.value">
+        <button class="btn" onclick="compressImage()" style="margin-top:12px;"><i class="fas fa-compress"></i> اضغط الصورة</button>
+        <div id="compressResult" style="display:none;" class="result-box">
+            <canvas id="compressCanvas" style="max-width:100%;border-radius:10px;"></canvas>
+            <p id="compressSizeInfo" style="margin-top:8px;"></p>
+            <button class="btn" onclick="downloadCompressed()" style="background:#10b981;margin-top:8px;"><i class="fas fa-download"></i> تحميل الصورة المضغوطة</button>
+        </div>
+    </div>`;
+}
+
+function previewCompress() {
+    const file = document.getElementById('compressInput').files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+        document.getElementById('compressPreview').src = e.target.result;
+        document.getElementById('compressPreviewArea').style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+}
+
+function compressImage() {
+    const file = document.getElementById('compressInput').files[0];
+    if (!file) { alert('الرجاء اختيار صورة أولاً.'); return; }
+    const quality = parseInt(document.getElementById('compressQual').value) / 100;
+    const originalSize = (file.size / 1024).toFixed(1);
+    
+    const reader = new FileReader();
+    reader.onload = e => {
+        const img = new Image();
+        img.onload = () => {
+            const canvas = document.getElementById('compressCanvas');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+            
+            const compressed = canvas.toDataURL('image/jpeg', quality);
+            const compressedSize = (compressed.length * 0.75 / 1024).toFixed(1);
+            const savings = (((file.size - compressed.length * 0.75) / file.size) * 100).toFixed(0);
+            
+            document.getElementById('compressSizeInfo').innerHTML = 
+                `الحجم الأصلي: <strong>${originalSize} KB</strong> → بعد الضغط: <strong>${compressedSize} KB</strong> (وفّرت <strong>${savings}%</strong>)`;
+            document.getElementById('compressResult').style.display = 'block';
+            saveOperation('ضغط صورة', `${originalSize}KB → ${compressedSize}KB`);
+        };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
+function downloadCompressed() {
+    const canvas = document.getElementById('compressCanvas');
+    const quality = parseInt(document.getElementById('compressQual').value) / 100;
+    const link = document.createElement('a');
+    link.download = 'compressed_image.jpg';
+    link.href = canvas.toDataURL('image/jpeg', quality);
+    link.click();
+}
+
+// ── Password Strength Checker ──────────────────────────────
+function getPassCheckTool() {
+    return `
+    <div class="tool-box">
+        <h2><i class="fas fa-shield-alt"></i> فحص قوة كلمة المرور</h2>
+        <label for="passCheckInput">أدخل كلمة المرور</label>
+        <div style="position:relative;">
+            <input type="password" id="passCheckInput" placeholder="اكتب كلمة المرور هنا..." oninput="checkPasswordStrength()" autocomplete="new-password">
+            <button onclick="togglePassVisibility()" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1.1rem;" id="passEyeBtn">👁</button>
+        </div>
+        <div class="pass-strength-bar-wrap" style="margin-top:12px;">
+            <div class="pass-strength-bar" id="passStrengthBar"></div>
+        </div>
+        <div id="passStrengthLabel" style="font-weight:700;margin-top:6px;font-size:1rem;"></div>
+        <div class="result-box" id="passCheckResult" style="margin-top:10px;"></div>
+    </div>`;
+}
+
+function togglePassVisibility() {
+    const inp = document.getElementById('passCheckInput');
+    const btn = document.getElementById('passEyeBtn');
+    if (inp.type === 'password') { inp.type = 'text'; btn.textContent = '🙈'; }
+    else { inp.type = 'password'; btn.textContent = '👁'; }
+}
+
+function checkPasswordStrength() {
+    const pass = document.getElementById('passCheckInput').value;
+    const bar = document.getElementById('passStrengthBar');
+    const label = document.getElementById('passStrengthLabel');
+    const result = document.getElementById('passCheckResult');
+    
+    if (!pass) { bar.style.width = '0%'; bar.style.background = ''; label.textContent = ''; result.innerHTML = ''; return; }
+    
+    let score = 0;
+    const checks = {
+        'طول ≥ 8 أحرف': pass.length >= 8,
+        'طول ≥ 12 حرفاً': pass.length >= 12,
+        'يحتوي أرقام': /\d/.test(pass),
+        'أحرف كبيرة': /[A-Z]/.test(pass),
+        'أحرف صغيرة': /[a-z]/.test(pass),
+        'رموز خاصة (!@#...)': /[^A-Za-z0-9]/.test(pass),
+        'لا يحتوي كلمات شائعة': !['password','123456','qwerty','admin','welcome'].some(w => pass.toLowerCase().includes(w))
+    };
+    
+    Object.values(checks).forEach(v => { if (v) score++; });
+    
+    const levels = [
+        { min: 0, max: 2, label: 'ضعيفة جداً 😰', color: '#ef4444', pct: '20%' },
+        { min: 3, max: 3, label: 'ضعيفة 😕',      color: '#f97316', pct: '40%' },
+        { min: 4, max: 4, label: 'متوسطة 😐',     color: '#f59e0b', pct: '60%' },
+        { min: 5, max: 5, label: 'جيدة 😊',       color: '#84cc16', pct: '80%' },
+        { min: 6, max: 7, label: 'قوية جداً 💪',  color: '#10b981', pct: '100%' }
+    ];
+    
+    const lvl = levels.find(l => score >= l.min && score <= l.max) || levels[0];
+    bar.style.width = lvl.pct;
+    bar.style.background = lvl.color;
+    label.textContent = `القوة: ${lvl.label}`;
+    label.style.color = lvl.color;
+    
+    const rows = Object.entries(checks).map(([name, ok]) => 
+        `<p style="color:${ok ? '#10b981' : '#ef4444'};margin:3px 0;">${ok ? '✅' : '❌'} ${name}</p>`
+    ).join('');
+    result.innerHTML = rows;
+}
+
+// ── Images to PDF ──────────────────────────────────────────
+function getImgToPDFTool() {
+    return `
+    <div class="tool-box">
+        <h2><i class="fas fa-file-pdf"></i> تحويل الصور إلى PDF</h2>
+        <label>اختر صورة أو أكثر</label>
+        <input type="file" id="pdfImgInput" accept="image/*" multiple onchange="previewPDFImages()">
+        <div id="pdfPreviewArea" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;"></div>
+        <button class="btn" onclick="convertImagesToPDF()" style="margin-top:14px;"><i class="fas fa-file-pdf"></i> تحويل إلى PDF</button>
+        <div id="pdfResult" class="result-box" style="display:none;text-align:center;">جاري الإنشاء...</div>
+    </div>`;
+}
+
+function previewPDFImages() {
+    const files = document.getElementById('pdfImgInput').files;
+    const area = document.getElementById('pdfPreviewArea');
+    area.innerHTML = '';
+    Array.from(files).forEach(file => {
+        const img = document.createElement('img');
+        img.style.cssText = 'max-width:120px;max-height:100px;border-radius:8px;border:2px solid #4f46e5;object-fit:contain;';
+        const reader = new FileReader();
+        reader.onload = e => img.src = e.target.result;
+        reader.readAsDataURL(file);
+        area.appendChild(img);
+    });
+}
+
+async function convertImagesToPDF() {
+    const files = document.getElementById('pdfImgInput').files;
+    if (!files.length) { alert('الرجاء اختيار صورة واحدة على الأقل.'); return; }
+    const resultEl = document.getElementById('pdfResult');
+    resultEl.style.display = 'block';
+    resultEl.textContent = '⏳ جاري إنشاء PDF...';
+    
+    try {
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+        
+        for (let i = 0; i < files.length; i++) {
+            const dataUrl = await new Promise(resolve => {
+                const reader = new FileReader();
+                reader.onload = e => resolve(e.target.result);
+                reader.readAsDataURL(files[i]);
+            });
+            const img = await new Promise(resolve => {
+                const image = new Image();
+                image.onload = () => resolve(image);
+                image.src = dataUrl;
+            });
+            if (i > 0) pdf.addPage();
+            const pageW = pdf.internal.pageSize.getWidth();
+            const pageH = pdf.internal.pageSize.getHeight();
+            const imgRatio = img.width / img.height;
+            let drawW = pageW - 20, drawH = drawW / imgRatio;
+            if (drawH > pageH - 20) { drawH = pageH - 20; drawW = drawH * imgRatio; }
+            const x = (pageW - drawW) / 2, y = (pageH - drawH) / 2;
+            pdf.addImage(dataUrl, 'JPEG', x, y, drawW, drawH);
+        }
+        pdf.save('images_to_pdf.pdf');
+        resultEl.innerHTML = `✅ تم إنشاء PDF بنجاح! (${files.length} صورة)`;
+        saveOperation('تحويل صور إلى PDF', `${files.length} صورة`);
+    } catch (e) {
+        resultEl.textContent = '❌ حدث خطأ. تأكد من تحميل الصفحة بالكامل.';
+    }
+}
+
+// ── Image Format Converter (PNG/JPG) ──────────────────────
+function getImgConvertTool() {
+    return `
+    <div class="tool-box">
+        <h2><i class="fas fa-image"></i> تحويل صيغة الصورة</h2>
+        <label>اختر الصورة</label>
+        <input type="file" id="convertImgInput" accept="image/*" onchange="previewConvertImg()">
+        <div id="convertImgPreviewArea" style="display:none;margin-top:10px;">
+            <img id="convertImgPreview" style="max-width:100%;max-height:200px;border-radius:10px;border:1px solid #e2e8f0;">
+            <p id="convertImgInfo" style="margin-top:6px;font-size:0.9rem;opacity:0.7;"></p>
+        </div>
+        <label style="margin-top:12px;">تحويل إلى:</label>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;">
+            <label style="cursor:pointer;"><input type="radio" name="convertFormat" value="png" checked> PNG</label>
+            <label style="cursor:pointer;"><input type="radio" name="convertFormat" value="jpeg"> JPG</label>
+            <label style="cursor:pointer;"><input type="radio" name="convertFormat" value="webp"> WebP</label>
+        </div>
+        <button class="btn" onclick="convertImageFormat()" style="margin-top:14px;"><i class="fas fa-exchange-alt"></i> تحويل وتنزيل</button>
+        <div id="convertImgResult" class="result-box" style="display:none;text-align:center;"></div>
+    </div>`;
+}
+
+function previewConvertImg() {
+    const file = document.getElementById('convertImgInput').files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+        document.getElementById('convertImgPreview').src = e.target.result;
+        document.getElementById('convertImgInfo').textContent = `الاسم: ${file.name} | الحجم: ${(file.size / 1024).toFixed(1)} KB`;
+        document.getElementById('convertImgPreviewArea').style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+}
+
+function convertImageFormat() {
+    const file = document.getElementById('convertImgInput').files[0];
+    if (!file) { alert('الرجاء اختيار صورة أولاً.'); return; }
+    const format = document.querySelector('input[name="convertFormat"]:checked').value;
+    const mimeType = `image/${format}`;
+    const ext = format === 'jpeg' ? 'jpg' : format;
+    
+    const reader = new FileReader();
+    reader.onload = e => {
+        const img = new Image();
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = img.width; canvas.height = img.height;
+            const ctx = canvas.getContext('2d');
+            if (format === 'jpeg') { ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, canvas.width, canvas.height); }
+            ctx.drawImage(img, 0, 0);
+            const dataUrl = canvas.toDataURL(mimeType, 0.92);
+            const link = document.createElement('a');
+            const baseName = file.name.replace(/\.[^.]+$/, '');
+            link.download = `${baseName}.${ext}`;
+            link.href = dataUrl;
+            link.click();
+            const resultEl = document.getElementById('convertImgResult');
+            resultEl.style.display = 'block';
+            const newSize = (dataUrl.length * 0.75 / 1024).toFixed(1);
+            resultEl.innerHTML = `✅ تم التحويل إلى <strong>${ext.toUpperCase()}</strong> (${newSize} KB) وبدأ التنزيل.`;
+            saveOperation('تحويل صيغة صورة', `${file.name} → .${ext}`);
+        };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
+// ── My IP Address ──────────────────────────────────────────
+function getMyIPTool() {
+    return `
+    <div class="tool-box">
+        <h2><i class="fas fa-network-wired"></i> معرفة IP الخاص بك</h2>
+        <div class="result-box" id="ipResult" style="text-align:center;font-size:1.1rem;">
+            <i class="fas fa-spinner fa-spin"></i> جاري تحديد عنوان IP...
+        </div>
+        <button class="btn" onclick="initMyIP()" style="margin-top:12px;"><i class="fas fa-sync"></i> تحديث</button>
+    </div>`;
+}
+
+function initMyIP() {
+    const resultEl = document.getElementById('ipResult');
+    if (!resultEl) return;
+    resultEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري تحديد عنوان IP...';
+    fetch('https://api.ipify.org?format=json')
+        .then(r => r.json())
+        .then(data => {
+            const ip = data.ip;
+            return fetch(`https://ipapi.co/${ip}/json/`).then(r => r.json()).then(geo => ({ ip, geo }));
+        })
+        .then(({ ip, geo }) => {
+            resultEl.innerHTML = `
+                <div style="font-size:2rem;margin-bottom:10px;">🌐</div>
+                <p><strong>عنوان IP:</strong> <span style="font-family:monospace;font-size:1.3rem;color:#4f46e5;">${ip}</span></p>
+                <p><strong>الدولة:</strong> ${geo.country_name || '—'} ${geo.country_code ? `(${geo.country_code})` : ''}</p>
+                <p><strong>المدينة:</strong> ${geo.city || '—'}</p>
+                <p><strong>المنطقة الزمنية:</strong> ${geo.timezone || '—'}</p>
+                <p><strong>مزود الخدمة (ISP):</strong> ${geo.org || '—'}</p>`;
+            saveOperation('معرفة IP', ip);
+        })
+        .catch(() => {
+            fetch('https://api.ipify.org?format=json')
+                .then(r => r.json())
+                .then(data => {
+                    resultEl.innerHTML = `<p><strong>عنوان IP:</strong> <span style="font-family:monospace;font-size:1.4rem;color:#4f46e5;">${data.ip}</span></p><p style="font-size:0.85rem;opacity:0.6;">لم يتوفر معلومات جغرافية.</p>`;
+                })
+                .catch(() => { resultEl.textContent = '❌ لم نتمكن من تحديد IP. تحقق من الاتصال.'; });
+        });
+}
+
+// ── Internet Speed Test ────────────────────────────────────
+function getSpeedTestTool() {
+    return `
+    <div class="tool-box">
+        <h2><i class="fas fa-tachometer-alt"></i> فحص سرعة الإنترنت</h2>
+        <p style="opacity:0.7;margin-bottom:15px;">يقيس سرعة التنزيل عبر تحميل ملف اختبار من CDN.</p>
+        <button class="btn" onclick="runSpeedTest()" id="speedTestBtn"><i class="fas fa-play"></i> ابدأ الاختبار</button>
+        <div id="speedResult" class="result-box" style="display:none;text-align:center;">
+            <div class="speed-gauge" id="speedGauge">
+                <div id="speedValue" style="font-size:3rem;font-weight:700;color:#4f46e5;">0</div>
+                <div style="font-size:1rem;opacity:0.7;">Mbps</div>
+            </div>
+            <div id="speedProgress" style="margin-top:12px;"></div>
+            <p id="speedLabel" style="margin-top:8px;font-weight:600;"></p>
+        </div>
+    </div>`;
+}
+
+function initSpeedTest() {}
+
+async function runSpeedTest() {
+    const btn = document.getElementById('speedTestBtn');
+    const result = document.getElementById('speedResult');
+    btn.disabled = true; btn.textContent = '⏳ جاري الاختبار...';
+    result.style.display = 'block';
+    document.getElementById('speedValue').textContent = '...';
+    document.getElementById('speedLabel').textContent = 'يتم قياس السرعة...';
+    document.getElementById('speedProgress').innerHTML = '<div style="width:100%;height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden;"><div id="speedBar" style="height:100%;width:0%;background:linear-gradient(90deg,#4f46e5,#10b981);transition:width 0.5s;"></div></div>';
+    
+    // Test URLs (small files from fast CDNs)
+    const testUrl = `https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css?cache_bust=${Date.now()}`;
+    
+    try {
+        let totalBits = 0;
+        let totalTime = 0;
+        const rounds = 3;
+        for (let i = 0; i < rounds; i++) {
+            document.getElementById('speedBar').style.width = `${((i / rounds) * 100)}%`;
+            const start = performance.now();
+            const response = await fetch(testUrl + i, { cache: 'no-store' });
+            const data = await response.text();
+            const elapsed = (performance.now() - start) / 1000;
+            totalBits += data.length * 8;
+            totalTime += elapsed;
+            document.getElementById('speedValue').textContent = ((totalBits / totalTime) / 1000000).toFixed(1);
+        }
+        document.getElementById('speedBar').style.width = '100%';
+        const speedMbps = (totalBits / totalTime / 1000000).toFixed(2);
+        document.getElementById('speedValue').textContent = speedMbps;
+        const label = speedMbps < 1 ? '🐢 بطيء جداً' : speedMbps < 5 ? '🐌 بطيء' : speedMbps < 25 ? '🚶 متوسط' : speedMbps < 100 ? '🚀 سريع' : '⚡ سريع جداً';
+        document.getElementById('speedLabel').textContent = label;
+        saveOperation('سرعة الإنترنت', `${speedMbps} Mbps`);
+    } catch (e) {
+        document.getElementById('speedLabel').textContent = '❌ فشل الاختبار. تحقق من الاتصال.';
+        document.getElementById('speedValue').textContent = '--';
+    }
+    btn.disabled = false; btn.innerHTML = '<i class="fas fa-redo"></i> إعادة الاختبار';
+}
+
+// ── Remove Duplicates ──────────────────────────────────────
+function getDeduplicateTool() {
+    return `
+    <div class="tool-box">
+        <h2><i class="fas fa-copy"></i> إزالة التكرار من النص</h2>
+        <label for="dedupeInput">أدخل النص (كل سطر على حدة)</label>
+        <textarea id="dedupeInput" style="min-height:150px;" placeholder="سطر 1&#10;سطر 2&#10;سطر 1&#10;سطر 3&#10;سطر 2"></textarea>
+        <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;align-items:center;">
+            <label style="cursor:pointer;"><input type="checkbox" id="dedupeTrim" checked> تجاهل المسافات الزائدة</label>
+            <label style="cursor:pointer;"><input type="checkbox" id="dedupeCase"> تجاهل حالة الأحرف</label>
+            <label style="cursor:pointer;"><input type="checkbox" id="dedupeEmpty" checked> حذف الأسطر الفارغة</label>
+        </div>
+        <button class="btn" onclick="deduplicateText()" style="margin-top:12px;"><i class="fas fa-filter"></i> إزالة التكرار</button>
+        <div id="dedupeResult" style="display:none;" class="result-box">
+            <p id="dedupeStats" style="margin-bottom:8px;font-weight:600;"></p>
+            <textarea id="dedupeOutput" style="min-height:130px;width:100%;background:transparent;border:none;resize:vertical;font-family:inherit;" readonly></textarea>
+            <button class="btn" onclick="copyDedupe()" style="margin-top:8px;background:#10b981;"><i class="fas fa-copy"></i> نسخ النتيجة</button>
+        </div>
+    </div>`;
+}
+
+function deduplicateText() {
+    const text = document.getElementById('dedupeInput').value;
+    const trim = document.getElementById('dedupeTrim').checked;
+    const ignoreCase = document.getElementById('dedupeCase').checked;
+    const removeEmpty = document.getElementById('dedupeEmpty').checked;
+    
+    let lines = text.split('\n');
+    const originalCount = lines.length;
+    
+    if (removeEmpty) lines = lines.filter(l => l.trim() !== '');
+    
+    const seen = new Set();
+    const unique = lines.filter(line => {
+        const key = ignoreCase ? (trim ? line.trim().toLowerCase() : line.toLowerCase()) : (trim ? line.trim() : line);
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+    });
+    
+    const removed = originalCount - unique.length;
+    document.getElementById('dedupeStats').textContent = `تم حذف ${removed} سطر مكرر – تبقّى ${unique.length} سطر فريد.`;
+    document.getElementById('dedupeOutput').value = unique.join('\n');
+    document.getElementById('dedupeResult').style.display = 'block';
+    saveOperation('إزالة تكرار', `حُذف ${removed} سطر`);
+}
+
+function copyDedupe() {
+    const text = document.getElementById('dedupeOutput').value;
+    navigator.clipboard.writeText(text).then(() => alert('✅ تم النسخ!')).catch(() => {
+        document.getElementById('dedupeOutput').select();
+        document.execCommand('copy');
+        alert('✅ تم النسخ!');
+    });
+}
+
+// ── Text to Bullet Points ──────────────────────────────────
+function getTextBulletTool() {
+    return `
+    <div class="tool-box">
+        <h2><i class="fas fa-list-ul"></i> تحويل النص إلى Bullet Points</h2>
+        <label for="bulletInput">أدخل النص</label>
+        <textarea id="bulletInput" style="min-height:140px;" placeholder="أدخل نصاً وسيتم تحويله إلى نقاط منظمة...&#10;&#10;يمكنك كتابة كل فكرة في سطر، أو كتابة نص متصل وسيتم تقسيمه تلقائياً."></textarea>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;align-items:center;">
+            <label style="margin:0;">رمز النقطة:</label>
+            <select id="bulletSymbol" style="width:auto;">
+                <option value="•">• نقطة</option>
+                <option value="→">→ سهم</option>
+                <option value="✓">✓ صح</option>
+                <option value="★">★ نجمة</option>
+                <option value="▶">▶ مثلث</option>
+            </select>
+            <label style="cursor:pointer;"><input type="checkbox" id="bulletNumbers"> ترقيم بدلاً من رموز</label>
+        </div>
+        <button class="btn" onclick="convertToBullets()" style="margin-top:12px;"><i class="fas fa-list"></i> تحويل إلى نقاط</button>
+        <div id="bulletResult" style="display:none;" class="result-box">
+            <div id="bulletOutput" style="white-space:pre-line;line-height:2;"></div>
+            <button class="btn" onclick="copyBullets()" style="margin-top:8px;background:#10b981;"><i class="fas fa-copy"></i> نسخ</button>
+        </div>
+    </div>`;
+}
+
+function convertToBullets() {
+    const text = document.getElementById('bulletInput').value.trim();
+    if (!text) { alert('الرجاء إدخال نص.'); return; }
+    const symbol = document.getElementById('bulletSymbol').value;
+    const numbered = document.getElementById('bulletNumbers').checked;
+    
+    const lines = text.split(/[\n.!?؟]+/).map(l => l.trim()).filter(l => l.length > 2);
+    const bullets = lines.map((line, i) => {
+        const prefix = numbered ? `${i + 1}.` : symbol;
+        return `${prefix} ${line}`;
+    }).join('\n');
+    
+    document.getElementById('bulletOutput').textContent = bullets;
+    document.getElementById('bulletResult').style.display = 'block';
+    saveOperation('تحويل إلى نقاط', `${lines.length} نقطة`);
+}
+
+function copyBullets() {
+    const text = document.getElementById('bulletOutput').textContent;
+    navigator.clipboard.writeText(text).then(() => alert('✅ تم النسخ!')).catch(() => {
+        const el = document.getElementById('bulletOutput');
+        const range = document.createRange();
+        range.selectNodeContents(el);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+        document.execCommand('copy');
+        alert('✅ تم النسخ!');
+    });
+}
+
+// ── Spell Checker ──────────────────────────────────────────
+function getSpellCheckTool() {
+    return `
+    <div class="tool-box">
+        <h2><i class="fas fa-spell-check"></i> كاشف الأخطاء الإملائية</h2>
+        <p style="opacity:0.7;margin-bottom:10px;font-size:0.9rem;">يدعم النصوص الإنجليزية بدقة عالية عبر LanguageTool API المجانية.</p>
+        <label for="spellInput">أدخل النص الإنجليزي</label>
+        <textarea id="spellInput" style="min-height:140px;" placeholder="Enter your English text here to check for spelling and grammar errors..."></textarea>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;align-items:center;">
+            <label style="margin:0;">اللغة:</label>
+            <select id="spellLang" style="width:auto;">
+                <option value="en-US">English (US)</option>
+                <option value="en-GB">English (UK)</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+                <option value="es">Español</option>
+                <option value="ar">العربية</option>
+            </select>
+        </div>
+        <button class="btn" onclick="checkSpelling()" style="margin-top:12px;"><i class="fas fa-search"></i> فحص الإملاء</button>
+        <div id="spellResult" style="display:none;margin-top:15px;"></div>
+    </div>`;
+}
+
+function checkSpelling() {
+    const text = document.getElementById('spellInput').value.trim();
+    const lang = document.getElementById('spellLang').value;
+    if (!text) { alert('الرجاء إدخال نص للفحص.'); return; }
+    
+    const resultEl = document.getElementById('spellResult');
+    resultEl.style.display = 'block';
+    resultEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الفحص...';
+    
+    const formData = new URLSearchParams();
+    formData.append('text', text);
+    formData.append('language', lang);
+    
+    fetch('https://api.languagetool.org/v2/check', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: formData
+    })
+    .then(r => r.json())
+    .then(data => {
+        const matches = data.matches || [];
+        if (matches.length === 0) {
+            resultEl.innerHTML = '<div class="result-box" style="border-right-color:#10b981;"><p style="color:#10b981;font-size:1.1rem;">✅ لا توجد أخطاء إملائية أو نحوية!</p></div>';
+            return;
+        }
+        
+        let highlighted = text;
+        const sorted = matches.slice().sort((a, b) => b.offset - a.offset);
+        sorted.forEach(m => {
+            const word = text.substring(m.offset, m.offset + m.length);
+            const suggestion = m.replacements.length ? ` (الاقتراح: <strong>${m.replacements.slice(0, 2).map(r => r.value).join('، ')}</strong>)` : '';
+            highlighted = highlighted.substring(0, m.offset) +
+                `<mark style="background:#fecaca;border-radius:3px;padding:0 2px;" title="${m.message}">${word}</mark>` +
+                highlighted.substring(m.offset + m.length);
+        });
+        
+        const errorList = matches.map((m, i) => {
+            const word = text.substring(m.offset, m.offset + m.length);
+            const sugg = m.replacements.slice(0, 3).map(r => r.value).join('، ');
+            return `<div style="padding:8px;border-bottom:1px solid #e2e8f0;"><strong style="color:#ef4444;">خطأ ${i + 1}:</strong> "${word}" — ${m.message}${sugg ? ` | الاقتراح: <em>${sugg}</em>` : ''}</div>`;
+        }).join('');
+        
+        resultEl.innerHTML = `
+            <div class="result-box" style="border-right-color:#f59e0b;">
+                <p style="font-weight:700;margin-bottom:10px;">وُجد <strong style="color:#ef4444;">${matches.length}</strong> خطأ:</p>
+                <div style="line-height:2;margin-bottom:15px;">${highlighted}</div>
+                <hr style="margin:10px 0;">
+                ${errorList}
+            </div>`;
+        saveOperation('فحص إملائي', `${matches.length} خطأ`);
+    })
+    .catch(() => {
+        resultEl.innerHTML = '<div class="result-box" style="border-right-color:#ef4444;"><p style="color:#ef4444;">❌ لم يتم الاتصال بخادم الفحص. تحقق من الاتصال بالإنترنت أو حاول لاحقاً.</p></div>';
+    });
+}
+
+// ============================================================
+// 11. SEO
 // ============================================================
 
 function updateSEOMeta(toolId = 'home') {
@@ -1466,6 +2246,18 @@ function updateSEOMeta(toolId = 'home') {
         color: 'مولد الألوان – توليد ألوان عشوائية',
         spinwheel: 'عجلة الحظ – اختيار فائز عشوائي من المشاركين',
         translator: 'مترجم فوري – ترجمة النصوص بين أكثر من 30 لغة',
+        qrcode: 'مولّد QR Code – تحويل النص أو الرابط إلى رمز QR',
+        summarizer: 'ملخّص النصوص الذكي – تلخيص تلقائي بالذكاء الاصطناعي',
+        seo: 'محلّل SEO – تحليل وتحسين موقعك لمحركات البحث',
+        imgcompress: 'ضاغط الصور – تقليل حجم الصورة مجاناً',
+        passcheck: 'فحص قوة كلمة المرور – اعرف مدى أمان كلمتك',
+        imgtopdf: 'تحويل الصور إلى PDF – دمج صور متعددة في PDF',
+        imgconvert: 'تحويل صيغة الصورة – PNG إلى JPG والعكس',
+        myip: 'معرفة IP الخاص بك – عنوانك الجغرافي والموقع',
+        speedtest: 'فحص سرعة الإنترنت – قياس سرعة التنزيل',
+        deduplicate: 'إزالة التكرار – حذف الأسطر المكررة من النص',
+        textbullet: 'النص إلى Bullet Points – تنظيم النص في نقاط',
+        spellcheck: 'كاشف الأخطاء الإملائية – تدقيق النصوص مجاناً',
         about: 'من نحن – فريق Smart Tools Hub',
         contact: 'اتصل بنا – تواصل مع فريق الدعم',
         privacy: 'سياسة الخصوصية – كيف نحمي بياناتك',
